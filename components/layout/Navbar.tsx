@@ -1,55 +1,83 @@
 "use client";
 
+import { useState } from "react";
+import { navigation } from "@/data";
 import { useTheme } from "@/contexts/ThemeContext";
-
-const links = [
-  "projects",
-  "about",
-  "skills",
-  "journey",
-  "research",
-  "creative",
-  "contact",
-];
+import Button from "@/components/ui/Button";
 
 export default function Navbar() {
-  const { mode, toggleTheme } = useTheme();
+  const { toggleTheme } = useTheme();
+
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 z-50 w-full border-b border-white/10 backdrop-blur-md">
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-8">
+    <header className="fixed top-0 z-50 w-full">
+      <nav className="mx-auto mt-5 flex h-16 w-[95%] max-w-7xl items-center justify-between rounded-full border border-white/10 bg-black/20 px-6 backdrop-blur-xl">
+
+        {/* Logo */}
 
         <a
           href="#hero"
-          className="text-xl font-bold"
+          className="text-xl font-black tracking-wider"
         >
-          Jiya.
+          JS
         </a>
 
-        <div className="hidden gap-8 md:flex">
+        {/* Desktop */}
 
-          {links.map((link) => (
+        <div className="hidden items-center gap-8 md:flex">
+
+          {navigation.map((item) => (
             <a
-              key={link}
-              href={`#${link}`}
-              className="capitalize hover:opacity-70 transition"
+              key={item.label}
+              href={item.href}
+              className="text-sm transition-opacity hover:opacity-60"
             >
-              {link}
+              {item.label}
             </a>
           ))}
 
         </div>
 
-        <button
-          onClick={toggleTheme}
-          className="rounded-lg border px-4 py-2"
-        >
-          {mode === "dreamer"
-            ? "Engineer"
-            : "Dreamer"}
-        </button>
+        {/* Right Side */}
 
-      </div>
-    </nav>
+        <div className="flex items-center gap-3">
+
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={toggleTheme}
+          >
+            🌙
+          </Button>
+
+          <button
+            className="md:hidden"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            ☰
+          </button>
+
+        </div>
+
+      </nav>
+
+      {menuOpen && (
+        <div className="mx-auto mt-3 flex w-[95%] max-w-7xl flex-col rounded-3xl border border-white/10 bg-black/40 p-6 backdrop-blur-xl md:hidden">
+
+          {navigation.map((item) => (
+            <a
+              key={item.label}
+              href={item.href}
+              onClick={() => setMenuOpen(false)}
+              className="py-3"
+            >
+              {item.label}
+            </a>
+          ))}
+
+        </div>
+      )}
+    </header>
   );
 }

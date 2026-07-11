@@ -32,6 +32,15 @@ export function ThemeProvider({
       ? dreamerTheme
       : engineerTheme;
 
+  useEffect(() => {
+    document.documentElement.classList.remove(
+      "dreamer",
+      "engineer"
+    );
+
+    document.documentElement.classList.add(mode);
+  }, [mode]);
+
   return (
     <ThemeContext.Provider
       value={{
@@ -56,13 +65,3 @@ export function useTheme() {
 
   return context;
 }
-useEffect(() => {
-
-    document.documentElement.classList.remove(
-        "dreamer",
-        "engineer"
-    );
-
-    document.documentElement.classList.add(mode);
-
-}, [mode]);
