@@ -15,11 +15,18 @@ export interface SiteContent {
 export interface Project {
   id: string;
   title: string;
+  tagline: string;
   description: string;
   technologies: string[];
   github: string;
   live?: string;
   featured: boolean;
+  status: "planned" | "ongoing" | "in-progress" | "completed";
+  year: string;
+  problem: string;
+  solution: string;
+  architecture: string;
+  learnings: string[];
 }
 
 export interface SkillCategory {

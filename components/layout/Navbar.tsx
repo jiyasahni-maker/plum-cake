@@ -1,45 +1,44 @@
 "use client";
 
 import { useState } from "react";
-import { navigation } from "@/data";
-import { useTheme } from "@/contexts/ThemeContext";
+import { Moon, Sun, Menu, X } from "lucide-react";
+
 import Button from "@/components/ui/Button";
 
-export default function Navbar() {
-  const { toggleTheme } = useTheme();
+import { navigation } from "@/data";
+import { useTheme } from "@/contexts/ThemeContext";
 
-  const [menuOpen, setMenuOpen] = useState(false);
+export default function Navbar() {
+  const { mode, toggleTheme } = useTheme();
+
+  const [menuOpen, setMenuOpen] =
+    useState(false);
 
   return (
     <header className="fixed top-0 z-50 w-full">
-      <nav className="mx-auto mt-5 flex h-16 w-[95%] max-w-7xl items-center justify-between rounded-full border border-white/10 bg-black/20 px-6 backdrop-blur-xl">
 
-        {/* Logo */}
+      <nav className="mx-auto mt-5 flex h-16 w-[95%] max-w-7xl items-center justify-between rounded-full border border-white/10 bg-black/20 px-6 backdrop-blur-xl">
 
         <a
           href="#hero"
-          className="text-xl font-black tracking-wider"
+          className="text-xl font-black"
         >
           JS
         </a>
 
-        {/* Desktop */}
-
-        <div className="hidden items-center gap-8 md:flex">
+        <div className="hidden gap-8 md:flex">
 
           {navigation.map((item) => (
             <a
               key={item.label}
               href={item.href}
-              className="text-sm transition-opacity hover:opacity-60"
+              className="transition hover:opacity-60"
             >
               {item.label}
             </a>
           ))}
 
         </div>
-
-        {/* Right Side */}
 
         <div className="flex items-center gap-3">
 
@@ -48,14 +47,28 @@ export default function Navbar() {
             size="sm"
             onClick={toggleTheme}
           >
-            🌙
+
+            {mode === "dreamer" ? (
+              <Moon size={18} />
+            ) : (
+              <Sun size={18} />
+            )}
+
           </Button>
 
           <button
+            onClick={() =>
+              setMenuOpen(!menuOpen)
+            }
             className="md:hidden"
-            onClick={() => setMenuOpen(!menuOpen)}
           >
-            ☰
+
+            {menuOpen ? (
+              <X size={22} />
+            ) : (
+              <Menu size={22} />
+            )}
+
           </button>
 
         </div>
@@ -63,21 +76,28 @@ export default function Navbar() {
       </nav>
 
       {menuOpen && (
+
         <div className="mx-auto mt-3 flex w-[95%] max-w-7xl flex-col rounded-3xl border border-white/10 bg-black/40 p-6 backdrop-blur-xl md:hidden">
 
           {navigation.map((item) => (
+
             <a
               key={item.label}
               href={item.href}
-              onClick={() => setMenuOpen(false)}
               className="py-3"
+              onClick={() =>
+                setMenuOpen(false)
+              }
             >
               {item.label}
             </a>
+
           ))}
 
         </div>
+
       )}
+
     </header>
   );
 }

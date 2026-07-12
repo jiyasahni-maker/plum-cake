@@ -2,7 +2,7 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 
 
-import Projects from "@/components/projects/Projects";
+import { Projects } from "@/components/projects";
 import About from "@/components/about/About";
 import Skills from "@/components/skills/Skills";
 import Timeline from "@/components/timeline/Timeline";
@@ -14,6 +14,7 @@ import RootBackground from "./RootBackground";
 import CustomCursor from "./CustomCursor";
 import ScrollProgress from "./ScrollProgress";
 import { Hero } from "@/components/hero/Index";
+import { Universe } from "../universe/Index";
 export default function AppLayout() {
   return (
     <>
@@ -21,6 +22,7 @@ export default function AppLayout() {
        <CustomCursor/>
 
     <ScrollProgress/>
+    <Universe>
 
       <Navbar />
 
@@ -43,6 +45,7 @@ export default function AppLayout() {
       </Main>
 
       <Footer />
+      </Universe>
     </>
   );
 }
