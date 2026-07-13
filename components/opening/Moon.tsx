@@ -1,26 +1,23 @@
 "use client";
 
+import BrandMark from "@/components/brand/BrandMark";
+
 interface MoonProps {
   onClick: () => void;
 }
 
-export default function Moon({
-  onClick,
-}: MoonProps) {
+export default function Moon({ onClick }: MoonProps) {
   return (
     <button
       onClick={onClick}
-      className="
-        h-28
-        w-28
-        rounded-full
-        bg-white
-        shadow-[0_0_120px_rgba(255,255,255,.25)]
-        transition
-        duration-500
-        hover:scale-105
-        hover:shadow-[0_0_150px_rgba(255,255,255,.35)]
-      "
-    />
+      aria-label="Enter the site"
+      className="group relative flex items-center justify-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+    >
+      <BrandMark
+        size={180}
+        revealed={false}
+        className="transition-transform duration-500 ease-out group-hover:scale-105"
+      />
+    </button>
   );
 }
