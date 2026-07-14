@@ -19,6 +19,10 @@ interface BrandMarkProps {
  * layoutId="brand-mark" so Framer Motion animates position/size as one
  * continuous flight between them, while the two inner <motion.g> groups
  * crossfade the artwork (moon disc out, crescent+monogram in).
+ *
+ * The moon disc itself never sits still: a slow breathing scale/glow loop
+ * runs continuously (independent of the reveal transition) so it feels
+ * alive at rest, not just during the click animation.
  */
 export default function BrandMark({ size, revealed, className }: BrandMarkProps) {
   return (
@@ -47,29 +51,76 @@ export default function BrandMark({ size, revealed, className }: BrandMarkProps)
             <stop offset="0%" stopColor="#FFD166" />
             <stop offset="100%" stopColor="#C084FC" />
           </linearGradient>
+
+          {/* Procedural fine crater speckle — turns noise into scattered
+              dark micro-patches, clipped to whatever shape it's drawn on. */}
+          <filter id="moon-texture" x="-20%" y="-20%" width="140%" height="140%">
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.9"
+              numOctaves="3"
+              seed="7"
+              result="noise"
+            />
+            <feColorMatrix
+              in="noise"
+              type="matrix"
+              values="0 0 0 0 0
+                      0 0 0 0 0
+                      0 0 0 0 0
+                      0.35 0.35 0.35 0 -0.65"
+              result="craterAlpha"
+            />
+            <feComposite in="craterAlpha" in2="SourceGraphic" operator="in" />
+          </filter>
+
+          {/* Soft blur for the large maria (dark plain) patches */}
+          <filter id="soft-blur" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="6" />
+          </filter>
         </defs>
 
-        {/* Ambient halo — present only while unrevealed */}
-        <motion.circle
-          cx="100"
-          cy="100"
-          r="96"
-          fill="url(#moon-glow)"
-          animate={{ opacity: revealed ? 0 : 1 }}
-          transition={{ duration: 0.5 }}
-        />
-
-        {/* Full moon disc */}
+        {/* Outer group: the single reveal transition (fade + slight shrink) */}
         <motion.g
           animate={{ opacity: revealed ? 0 : 1, scale: revealed ? 0.85 : 1 }}
           transition={{ duration: 0.45 }}
           style={{ transformOrigin: "100px 100px" }}
         >
-          <circle cx="100" cy="100" r="68" fill="#F4F1FF" />
-          <circle cx="76" cy="72" r="9" fill="#DAD4F7" opacity="0.55" />
-          <circle cx="122" cy="92" r="13" fill="#DAD4F7" opacity="0.45" />
-          <circle cx="92" cy="128" r="7" fill="#DAD4F7" opacity="0.55" />
-          <circle cx="128" cy="138" r="5" fill="#DAD4F7" opacity="0.4" />
+          {/* Inner group: idle breathing loop, always running regardless of reveal */}
+          <motion.g
+            animate={{ scale: [1, 1.015, 1] }}
+            transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
+            style={{ transformOrigin: "100px 100px" }}
+          >
+            <motion.circle
+              cx="100"
+              cy="100"
+              r="96"
+              fill="url(#moon-glow)"
+              animate={{ opacity: [0.55, 0.95, 0.55] }}
+              transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
+            />
+
+            {/* Base disc */}
+            <circle cx="100" cy="100" r="68" fill="#EDE9FB" />
+
+            {/* Large soft maria (lunar plains) */}
+            <g filter="url(#soft-blur)" opacity="0.35">
+              <ellipse cx="78" cy="82" rx="22" ry="16" fill="#B9B0E0" />
+              <ellipse cx="122" cy="108" rx="18" ry="24" fill="#B9B0E0" />
+              <ellipse cx="90" cy="132" rx="14" ry="10" fill="#B9B0E0" />
+            </g>
+
+            {/* Fine crater speckle overlay */}
+            <circle
+              cx="100"
+              cy="100"
+              r="68"
+              fill="#6b6491"
+              filter="url(#moon-texture)"
+              opacity="0.5"
+            />
+          </motion.g>
         </motion.g>
 
         {/* Crescent + monogram — the resting logo state */}
@@ -90,6 +141,7 @@ export default function BrandMark({ size, revealed, className }: BrandMarkProps)
             fontFamily="var(--font-cinzel), Georgia, serif"
             fontSize="42"
             fontWeight="700"
+            color="var(--fg)"
             fill="var(--bg)"
           >
             JS
