@@ -12,6 +12,9 @@
   --accent: #FFD166;
 
   --transition: 500ms ease;
+
+  --font-heading: var(--font-cinzel);
+  --font-body: var(--font-inter);
 }
 
 html.engineer {
@@ -26,6 +29,9 @@ html.engineer {
   --accent: #2563eb;
 
   --transition: 300ms ease;
+
+  --font-heading: var(--font-inter);
+  --font-body: var(--font-inter);
 }
 
 html,
@@ -37,6 +43,7 @@ body{
 
     background:var(--bg);
     color:var(--text);
+    font-family: var(--font-body);
 
     transition:
         background var(--transition),
@@ -45,15 +52,21 @@ body{
     overflow-x:hidden;
 }
 
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+}
+
 *{
     box-sizing:border-box;
 }
 
-@keyframes twinkle {
-  0%, 100% { opacity: 0.25; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.4); }
-}
-
-.star {
-  animation: twinkle 3.5s ease-in-out infinite;
+@media (prefers-reduced-motion: reduce) {
+  html, body {
+    scroll-behavior: auto;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
 }

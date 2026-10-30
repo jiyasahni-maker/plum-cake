@@ -4,10 +4,9 @@ import { useState } from "react";
 import { navigation } from "@/data";
 import { useTheme } from "@/contexts/ThemeContext";
 import Button from "@/components/ui/Button";
-import BrandMark from "@/components/brand/BrandMark";
 
 export default function Navbar() {
-  const { toggleTheme } = useTheme();
+  const { mode, toggleTheme, isTransitioning } = useTheme();
 
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -15,14 +14,13 @@ export default function Navbar() {
     <header className="fixed top-0 z-50 w-full">
       <nav className="mx-auto mt-5 flex h-16 w-[95%] max-w-7xl items-center justify-between rounded-full border border-white/10 bg-black/20 px-6 backdrop-blur-xl">
 
-        {/* Logo — the moon lands here */}
+        {/* Logo */}
 
         <a
           href="#hero"
-          aria-label="Home"
-          className="flex items-center"
+          className="text-xl font-black tracking-wider"
         >
-          <BrandMark size={36} revealed />
+          JS
         </a>
 
         {/* Desktop */}
@@ -49,8 +47,14 @@ export default function Navbar() {
             variant="outline"
             size="sm"
             onClick={toggleTheme}
+            disabled={isTransitioning}
+            aria-label={
+              mode === "dreamer"
+                ? "Switch to studio mode"
+                : "Switch to observatory mode"
+            }
           >
-            🌙
+            {mode === "dreamer" ? "✦" : "☀"}
           </Button>
 
           <button

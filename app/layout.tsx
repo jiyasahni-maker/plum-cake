@@ -1,35 +1,26 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Cinzel, Inter } from "next/font/google";
+import { Cinzel, Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/contexts/ThemeContext";
-import { ExperienceProvider } from "@/providers/ExperienceProvider";
+import ModeTransition from "@/components/layout/ModeTransition";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-// Referenced by themes/dreamer.ts (heading) and themes/engineer.ts (heading + body)
+// Dreamer mode's heading face — an engraved, observatory-plaque feel.
 const cinzel = Cinzel({
   variable: "--font-cinzel",
   subsets: ["latin"],
-  weight: ["400", "600", "700"],
+  weight: ["400", "600", "900"],
 });
 
+// Body face for both modes, and the heading face for engineer mode.
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "Jiya Sahni — Portfolio",
+  title: "Jiya Sahni",
   description:
-    "Software engineer portfolio — celestial and professional modes.",
+    "Two ways in: an observatory of ideas, and a studio where they get built.",
 };
 
 export default function RootLayout({
@@ -40,11 +31,12 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${cinzel.variable} ${inter.variable} h-full antialiased`}
+      className={`${cinzel.variable} ${inter.variable} h-full antialiased`}
     >
       <body>
         <ThemeProvider>
-          <ExperienceProvider>{children}</ExperienceProvider>
+          {children}
+          <ModeTransition />
         </ThemeProvider>
       </body>
     </html>
