@@ -26,7 +26,7 @@ function useStarfield(count: number): Star[] {
 }
 
 export default function OpeningExperience() {
-  const { enterUniverse } = useExperience();
+  const { triggerEntry } = useExperience();
   const stars = useStarfield(90);
 
   return (
@@ -50,7 +50,7 @@ export default function OpeningExperience() {
         <div className="absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,_rgba(124,58,237,0.25),_transparent_70%)]" />
       </div>
 
-      <Moon onClick={enterUniverse} />
+      <Moon onClick={triggerEntry} />
 
       <Prompt />
     </section>
