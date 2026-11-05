@@ -10,16 +10,28 @@ import * as THREE from "three";
  * in "dreamer" mode. Kept deliberately slow and quiet — this is
  * atmosphere, not a hero animation.
  */
+// Small seeded PRNG so the sky is stable between renders (and pure).
+function mulberry32(seed: number) {
+  return () => {
+    seed |= 0;
+    seed = (seed + 0x6d2b79f5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
 function Stars({ count = 900 }: { count?: number }) {
   const pointsRef = useRef<THREE.Points>(null);
   const groupRef = useRef<THREE.Group>(null);
 
   const positions = useMemo(() => {
+    const rand = mulberry32(1729);
     const arr = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
-      const radius = 6 + Math.random() * 18;
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(Math.random() * 2 - 1);
+      const radius = 6 + rand() * 18;
+      const theta = rand() * Math.PI * 2;
+      const phi = Math.acos(rand() * 2 - 1);
       arr[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
       arr[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta) * 0.6;
       arr[i * 3 + 2] = radius * Math.cos(phi) - 10;

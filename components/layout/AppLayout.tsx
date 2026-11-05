@@ -27,13 +27,13 @@ export default function AppLayout() {
       <Main>
         <Hero />
 
-        <Projects />
-
         <About />
 
-        <Skills />
-
         <Timeline />
+
+        <Projects />
+
+        <Skills />
 
         <Research />
 

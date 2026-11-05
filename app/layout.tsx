@@ -3,6 +3,7 @@ import { Cinzel, Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import ModeTransition from "@/components/layout/ModeTransition";
+import IntroScene from "@/components/layout/IntroScene";
 
 // Dreamer mode's heading face — an engraved, observatory-plaque feel.
 const cinzel = Cinzel({
@@ -37,6 +38,7 @@ export default function RootLayout({
         <ThemeProvider>
           {children}
           <ModeTransition />
+          <IntroScene />
         </ThemeProvider>
       </body>
     </html>

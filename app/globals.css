@@ -70,3 +70,27 @@ h1, h2, h3, h4 {
     transition-duration: 0.001ms !important;
   }
 }
+/* Keep anchored sections clear of the fixed navbar. */
+section[id] {
+  scroll-margin-top: 6rem;
+}
+
+/* ---- Intro scene (lite tier + atmosphere) ---- */
+@keyframes intro-spin { to { transform: rotate(360deg); } }
+@keyframes intro-spin-rev { to { transform: rotate(-360deg); } }
+@keyframes intro-breathe { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+@keyframes intro-drift {
+  0%, 100% { transform: translate3d(-3%, 0, 0) scale(1); }
+  50% { transform: translate3d(3%, -2%, 0) scale(1.08); }
+}
+@keyframes intro-float {
+  0% { transform: translateY(0); opacity: 0; }
+  20% { opacity: 0.9; }
+  100% { transform: translateY(-140px); opacity: 0; }
+}
+.intro-spin { transform-origin: 200px 200px; animation: intro-spin 46s linear infinite; }
+.intro-spin-rev { transform-origin: 200px 200px; animation: intro-spin-rev 62s linear infinite; }
+.intro-spin-slow { transform-origin: 200px 200px; animation: intro-spin 90s linear infinite; }
+.intro-breathe { animation: intro-breathe 4s ease-in-out infinite; }
+.intro-drift { animation: intro-drift 18s ease-in-out infinite; }
+.intro-float { animation: intro-float 8s ease-in infinite; }
